@@ -1,6 +1,5 @@
 package objects;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.mygdx.game.Scrollable;
@@ -31,7 +30,7 @@ public class mascara extends Scrollable {
     }
     public void reset(float newX) {
         super.reset(newX);
-        float newSize = Methods.randomFloat(Settings.MIN_ASTEROID, Settings.MAX_ASTEROID);
+        float newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA);
         width = height = 20 * newSize;
         position.y = new Random().nextInt((int) (Settings.GAME_HEIGHT - (int)height));
     }

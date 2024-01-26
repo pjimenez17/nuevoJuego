@@ -2,7 +2,6 @@ package objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.math.Vector2;
 
@@ -36,13 +35,13 @@ public class samba extends Actor {
     public void act(float delta) {
         switch(direction){
             case SPACECRAFT_UP:
-                if (this.position.y - Settings.SPACECRAFT_VELOCITY * delta >= 0) {
-                    this.position.y -= Settings.SPACECRAFT_VELOCITY * delta;
+                if (this.position.y - Settings.SAMBA_VELOCITY * delta >= 0) {
+                    this.position.y -= Settings.SAMBA_VELOCITY * delta;
                 }
                 break;
             case SPACECRAFT_DOWN:
-                if (this.position.y + height + Settings.SPACECRAFT_VELOCITY * delta <= Settings.GAME_HEIGHT) {
-                    this.position.y += Settings.SPACECRAFT_VELOCITY * delta;
+                if (this.position.y + height + Settings.SAMBA_VELOCITY * delta <= Settings.GAME_HEIGHT) {
+                    this.position.y += Settings.SAMBA_VELOCITY * delta;
                 }
                 break;
             case SPACECRAFT_STRAIGHT:

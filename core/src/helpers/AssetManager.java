@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class AssetManager {
     public static Sound explosionSound;
     public static Music music;
+    public static Music music2;
     // Sprite Sheet
     public static Texture samba;
     public static Texture background;
@@ -35,6 +36,10 @@ public class AssetManager {
         music = Gdx.audio.newMusic(Gdx.files.internal("musica.mp3"));
         music.setVolume(0.9f);
         music.setLooping(true);
+
+        music2 = Gdx.audio.newMusic(Gdx.files.internal("musicaMenu.mp3"));
+        music2.setVolume(0.9f);
+        music2.setLooping(true);
     }
 
     public static void dispose() {

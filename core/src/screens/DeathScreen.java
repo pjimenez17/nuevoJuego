@@ -23,6 +23,8 @@ public class DeathScreen implements Screen {
 
         batch = new SpriteBatch();
         font = new BitmapFont();
+        font.getData().setScale(2, 2); // Aumenta el tamaño de la fuente
+
     }
 
     @Override

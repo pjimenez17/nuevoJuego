@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import java.util.ArrayList;
 import java.util.Random;
 
+import objects.MascaraBona;
 import objects.mascara;
 import objects.Background;
 import objects.samba;
@@ -16,8 +17,10 @@ public class ScrollHandler extends Group {
     Background bg, bg_back;
 
     // Asteroides
-    int numAsteroids;
+    int numMascaras, numMascaresBona;
     ArrayList<mascara> mascaras;
+    ArrayList<MascaraBona> mascarasBona;
+
 
     // Objecte Random
     Random r;
@@ -35,30 +38,44 @@ public class ScrollHandler extends Group {
         // Creem l'objecte random
         r = new Random();
 
-        // Comencem amb 3 asteroides
-        numAsteroids = 3;
+        numMascaras = 3;
+        numMascaresBona = 3;
 
         // Creem l'ArrayList
         mascaras = new ArrayList<mascara>();
+        mascarasBona = new ArrayList<>();
+
+        for (int i = 0; i < numMascaresBona; i++) {
+            float newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA) * 34;
+            MascaraBona mascaraBona = new MascaraBona(Settings.GAME_WIDTH, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.MASCARA_SPEED);
+            mascarasBona.add(mascaraBona);
+            addActor(mascaraBona);
+        }
+
 
         // Definim una mida aleatòria entre el mínim i el màxim
-        float newSize = Methods.randomFloat(Settings.MIN_ASTEROID, Settings.MAX_ASTEROID) * 34;
+        float newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA) * 34;
 
-        // Afegim el primer asteroide a l'array i al grup
-        mascara mascara = new mascara(Settings.GAME_WIDTH, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.ASTEROID_SPEED);
+        mascara mascara = new mascara(Settings.GAME_WIDTH, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.MASCARA_SPEED);
         mascaras.add(mascara);
         addActor(mascara);
 
+
+
         // Des del segon fins l'últim asteroide
-        for (int i = 1; i < numAsteroids; i++) {
+        for (int i = 1; i < numMascaras; i++) {
             // Creem la mida aleatòria
-            newSize = Methods.randomFloat(Settings.MIN_ASTEROID, Settings.MAX_ASTEROID) * 34;
-            // Afegim l'asteroide
-            mascara = new mascara(mascaras.get(mascaras.size() - 1).getTailX() + Settings.ASTEROID_GAP, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.ASTEROID_SPEED);
-            // Afegim l'asteroide a l'ArrayList
+            newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA) * 34;
+            mascara = new mascara(mascaras.get(mascaras.size() - 1).getTailX() + Settings.MASCARA_GAP, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.MASCARA_SPEED);
             mascaras.add(mascara);
-            // Afegim l'asteroide al grup d'actors
             addActor(mascara);
+        }
+        for (int i = 1; i < numMascaresBona; i++) {
+            // Creem la mida aleatòria
+            newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA) * 34;
+            MascaraBona mascaraBona = new MascaraBona(mascarasBona.get(mascarasBona.size() - 1).getTailX() + Settings.MASCARA_GAP, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.MASCARA_SPEED);
+            mascarasBona.add(mascaraBona);
+            addActor(mascaraBona);
         }
 
     }
@@ -88,15 +105,28 @@ public class ScrollHandler extends Group {
             mascara mascara = mascaras.get(i);
             if (mascara.isLeftOfScreen()) {
                 if (i == 0) {
-                    mascara.reset(mascaras.get(mascaras.size() - 1).getTailX() + Settings.ASTEROID_GAP);
+                    mascara.reset(mascaras.get(mascaras.size() - 1).getTailX() + Settings.MASCARA_GAP);
                 } else {
-                    mascara.reset(mascaras.get(i - 1).getTailX() + Settings.ASTEROID_GAP);
+                    mascara.reset(mascaras.get(i - 1).getTailX() + Settings.MASCARA_GAP);
+                }
+            }
+        }
+        for (int i = 0; i < mascarasBona.size(); i++) {
+            MascaraBona mascaraBona = mascarasBona.get(i);
+            if (mascaraBona.isLeftOfScreen()) {
+                if (i == 0) {
+                    mascaraBona.reset(mascarasBona.get(mascarasBona.size() - 1).getTailX() + Settings.MASCARA_GAP);
+                } else {
+                    mascaraBona.reset(mascarasBona.get(i - 1).getTailX() + Settings.MASCARA_GAP);
                 }
             }
         }
     }
 
-    public ArrayList<mascara> getAsteroids() {
+    public ArrayList<mascara> getMascaras() {
         return mascaras;
+    }
+    public ArrayList<MascaraBona> getMascarasBona() {
+        return mascarasBona;
     }
 }

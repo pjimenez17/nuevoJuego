@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import helpers.AssetManager;
 
@@ -22,16 +22,19 @@ import helpers.InputHandler;
 import objects.MascaraBona;
 import objects.mascara;
 import objects.samba;
+import utils.Methods;
 import utils.Settings;
 
 public class GameScreen implements Screen {
     Boolean gameOver = false;
     private SambaRace game; // Añade esta línea
+    private Random r; // Add this line
 
 
     private Stage stage;
     private samba samba;
     private mascara mascara;
+    private MascaraBona mascaraBona;
     private ScrollHandler scrollHandler;
     // Representació de figures geomètriques
     private ShapeRenderer shapeRenderer;
@@ -43,17 +46,18 @@ public class GameScreen implements Screen {
 
 
     public GameScreen(SambaRace game) {
+        r = new Random(); // Initialize the Random instance
         this.game = game;
         AssetManager.music.play();
         shapeRenderer = new ShapeRenderer();
         OrthographicCamera camera = new OrthographicCamera(Settings.GAME_WIDTH, Settings.GAME_HEIGHT);
         camera.setToOrtho(false);
         StretchViewport viewport = new StretchViewport(Settings.GAME_WIDTH, Settings.GAME_HEIGHT , camera);
-        mascarasBona = new ArrayList<MascaraBona>();
         stage = new Stage(viewport);
         batch = stage.getBatch();
-        samba = new samba(Settings.SPACECRAFT_STARTX, Settings.SPACECRAFT_STARTY, Settings.SPACECRAFT_WIDTH, Settings.SPACECRAFT_HEIGHT);
+        samba = new samba(Settings.SAMBA_STARTX, Settings.SAMBA_STARTY, Settings.SAMBA_WIDTH, Settings.SAMBA_HEIGHT);
         scrollHandler = new ScrollHandler();
+        mascarasBona = scrollHandler.getMascarasBona();
         stage.addActor(scrollHandler);
         stage.addActor(samba);
         samba.setName("samba");
@@ -70,7 +74,10 @@ public class GameScreen implements Screen {
         shapeRenderer.setColor(new Color(0,1,0,1));
         shapeRenderer.rect(samba.getX(), samba.getY(), samba.getWidth(), samba.getHeight());
 
-        ArrayList<mascara> mascaras = scrollHandler.getAsteroids();
+
+
+
+        ArrayList<mascara> mascaras = scrollHandler.getMascaras();
         mascara mascara;
 
         for(int i = 0; i< mascaras.size(); i++) {
@@ -91,6 +98,25 @@ public class GameScreen implements Screen {
             }
             shapeRenderer.circle(mascara.getX() + mascara.getWidth()/2, mascara.getY()+ mascara.getWidth()/2, mascara.getWidth()/2);
         }
+        for(int i = 0; i< mascarasBona.size(); i++) {
+            MascaraBona mascaraBona = mascarasBona.get(i);
+            switch(i){
+                case 0:
+                    shapeRenderer.setColor(new Color(1,0,0,1));
+                    break;
+                case 1:
+                    shapeRenderer.setColor(new Color(0,0,1,1));
+                    break;
+                case 2:
+                    shapeRenderer.setColor(new Color(1,1,0,1));
+                    break;
+                default:
+                    shapeRenderer.setColor(new Color(1,1,1,1));
+                    break;
+            }
+            shapeRenderer.circle(mascaraBona.getX() + mascaraBona.getWidth()/2, mascaraBona.getY()+ mascaraBona.getWidth()/2, mascaraBona.getWidth()/2);
+        }
+
         shapeRenderer.end();
     }
 
@@ -120,9 +146,11 @@ public class GameScreen implements Screen {
             for(MascaraBona mascaraBona: mascarasBona){
                 if(mascaraBona.collides(samba)){
                     points++; // Incrementa el contador de puntos
-                    mascarasBona.remove(mascaraBona); // Elimina la MascaraBona de la lista
-                    mascaraBona.remove(); // Elimina la MascaraBona del Stage
-                    break; // Sal del bucle para evitar errores de concurrencia
+                    float newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA) * 34;
+                    mascaraBona.reset(Settings.GAME_WIDTH + r.nextInt(Settings.GAME_WIDTH));
+                    mascaraBona.setWidth(newSize);
+                    mascaraBona.setHeight(newSize);
+                    mascaraBona.setY(r.nextInt(Settings.GAME_HEIGHT - (int) newSize));
                 }
             }
             if (scrollHandler.collides(samba)) {
@@ -157,7 +185,7 @@ public class GameScreen implements Screen {
     }
     public void restartGame() {
         gameOver = false;
-        samba = new samba(Settings.SPACECRAFT_STARTX, Settings.SPACECRAFT_STARTY, Settings.SPACECRAFT_WIDTH, Settings.SPACECRAFT_HEIGHT);
+        samba = new samba(Settings.SAMBA_STARTX, Settings.SAMBA_STARTY, Settings.SAMBA_WIDTH, Settings.SAMBA_HEIGHT);
         scrollHandler = new ScrollHandler();
         stage.clear();
         stage.addActor(scrollHandler);

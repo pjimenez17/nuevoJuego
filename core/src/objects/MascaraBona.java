@@ -29,9 +29,11 @@ public class MascaraBona extends Scrollable {
 
     public void reset(float newX) {
         super.reset(newX);
-        float newSize = Methods.randomFloat(Settings.MIN_ASTEROID, Settings.MAX_ASTEROID);
+        float newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA);
         width = height = 20 * newSize;
         position.y = new Random().nextInt((int) (Settings.GAME_HEIGHT - (int)height));
+        // Ajustamos la posición inicial en el eje X para que esté fuera de la pantalla
+        position.x = Settings.GAME_WIDTH;
     }
 
     public float getRunTime() {

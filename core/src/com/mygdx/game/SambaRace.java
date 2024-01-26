@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 
 import helpers.AssetManager;
 import screens.GameScreen;
+import screens.mainScreen;
 
 public class SambaRace extends Game {
 	
@@ -13,7 +14,7 @@ public class SambaRace extends Game {
 		// A l'iniciar el joc carreguem els recursos
 		AssetManager.load();
 		// I definim la pantalla principal com a la pantalla
-		setScreen(new GameScreen(this));
+		setScreen(new mainScreen(this));
 	}
 
 	@Override
