@@ -62,7 +62,6 @@ public class ScrollHandler extends Group {
 
 
 
-        // Des del segon fins l'últim asteroide
         for (int i = 1; i < numMascaras; i++) {
             // Creem la mida aleatòria
             newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA) * 34;

@@ -145,6 +145,7 @@ public class GameScreen implements Screen {
         if (!gameOver) {
             for(MascaraBona mascaraBona: mascarasBona){
                 if(mascaraBona.collides(samba)){
+                    AssetManager.collect.play();
                     points++; // Incrementa el contador de puntos
                     float newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA) * 34;
                     mascaraBona.reset(Settings.GAME_WIDTH + r.nextInt(Settings.GAME_WIDTH));
@@ -155,6 +156,7 @@ public class GameScreen implements Screen {
             }
             if (scrollHandler.collides(samba)) {
                 stage.getRoot().findActor("samba").remove();
+                AssetManager.dead.play();
                 gameOver = true;
                 game.setScreen(new DeathScreen(game, points)); // Cambia a la pantalla de muerte cuando el jugador muere
 
