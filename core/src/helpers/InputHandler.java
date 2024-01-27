@@ -13,7 +13,7 @@ public class InputHandler implements InputProcessor{
 
     public InputHandler(GameScreen screen) {
         this.screen = screen;
-        samba = screen.getSpacecraft();
+        samba = screen.getSamba();
     }
 
     @Override

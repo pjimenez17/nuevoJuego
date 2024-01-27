@@ -124,7 +124,7 @@ public class GameScreen implements Screen {
         return stage;
     }
 
-    public samba getSpacecraft() {
+    public samba getSamba() {
         return samba;
     }
 
@@ -152,6 +152,10 @@ public class GameScreen implements Screen {
                     mascaraBona.setWidth(newSize);
                     mascaraBona.setHeight(newSize);
                     mascaraBona.setY(r.nextInt(Settings.GAME_HEIGHT - (int) newSize));
+                    if (points >= 50) {
+                        game.setScreen(new WinScreen(game)); // Switch to WinScreen when points reach 50
+                        return;
+                    }
                 }
             }
             if (scrollHandler.collides(samba)) {

@@ -16,7 +16,6 @@ public class ScrollHandler extends Group {
     // Fons de pantalla
     Background bg, bg_back;
 
-    // Asteroides
     int numMascaras, numMascaresBona;
     ArrayList<mascara> mascaras;
     ArrayList<MascaraBona> mascarasBona;
@@ -78,9 +77,9 @@ public class ScrollHandler extends Group {
         }
 
     }
-    public boolean collides(samba nau){
+    public boolean collides(samba smb){
         for(mascara mascara : mascaras){
-            if(mascara.collides(nau)){
+            if(mascara.collides(smb)){
                 return true;
             }
         }

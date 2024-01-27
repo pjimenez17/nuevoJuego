@@ -43,9 +43,9 @@ public class mascara extends Scrollable {
         super.draw(batch, parentAlpha);
         batch.draw(AssetManager.mascara_malvada, position.x, position.y, width, height);
     }
-    public boolean collides(samba nau){
-        if (position.x <= nau.getX() + nau.getWidth()) {
-            return (Intersector.overlaps(collisionCircle, nau.getCollisionRect()));
+    public boolean collides(samba smb){
+        if (position.x <= smb.getX() + smb.getWidth()) {
+            return (Intersector.overlaps(collisionCircle, smb.getCollisionRect()));
         }
         return false;
     }
