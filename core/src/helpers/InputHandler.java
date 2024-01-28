@@ -51,7 +51,7 @@ public class InputHandler implements InputProcessor{
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if(Math.abs(previousY - screenY) > 2) {
-            if(previousY<screenY) {
+            if(previousY > screenY) { // Si arrastras hacia arriba
                 samba.goDown();
             } else {
                 samba.goUp();
@@ -61,7 +61,6 @@ public class InputHandler implements InputProcessor{
         }
         return false;
     }
-
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         return false;
