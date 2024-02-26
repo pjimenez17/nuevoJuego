@@ -12,9 +12,9 @@ import utils.Settings;
 
 public class samba extends Actor {
 
-    public static final int SAMBA_STRAIGHT = 0;
-    public static final int SAMBA_UP = 1;
-    public static final int SAMBA_DOWN = 2;
+    public static final int SAMBA_STILL = 0;
+    public static final int SAMBA_LEFT = 1;
+    public static final int SAMBA_RIGHT = 2;
 
     private Vector2 position;
     private int width, height;
@@ -27,28 +27,27 @@ public class samba extends Actor {
         this.height = height;
         position = new Vector2(x, y);
 
-        direction = SAMBA_STRAIGHT;
+        direction = SAMBA_STILL;
         collisionRect = new Rectangle();
 
     }
 
     public void act(float delta) {
         switch(direction){
-            case SAMBA_UP:
-                if (this.position.y - Settings.SAMBA_VELOCITY * delta >= 0) {
-                    this.position.y -= Settings.SAMBA_VELOCITY * delta;
+            case SAMBA_LEFT:
+                if (this.position.x - Settings.SAMBA_VELOCITY * delta >= 0) {
+                    this.position.x -= Settings.SAMBA_VELOCITY * delta;
                 }
                 break;
-            case SAMBA_DOWN:
-                if (this.position.y + height + Settings.SAMBA_VELOCITY * delta <= Settings.GAME_HEIGHT) {
-                    this.position.y += Settings.SAMBA_VELOCITY * delta;
+            case SAMBA_RIGHT:
+                if (this.position.x + width + Settings.SAMBA_VELOCITY * delta <= Settings.GAME_WIDTH) {
+                    this.position.x += Settings.SAMBA_VELOCITY * delta;
                 }
                 break;
-            case SAMBA_STRAIGHT:
+            case SAMBA_STILL:
                 break;
         }
         collisionRect.set(position.x, position.y + 3, width, 10);
-
     }
     // Getters dels atributs principals
     public float getX() {
@@ -69,18 +68,18 @@ public class samba extends Actor {
     }
 
     // Canviem la direcció de l'samba: Puja
-    public void goUp() {
-        direction = SAMBA_UP;
+    public void goLeft() {
+        direction = SAMBA_LEFT;
     }
 
-    // Canviem la direcció de l'samba: Baixa
-    public void goDown() {
-        direction = SAMBA_DOWN;
+    // Canviem la direcció de l'samba: Derecha
+    public void goRight() {
+        direction = SAMBA_RIGHT;
     }
 
     // Posem l'samba al seu estat original
-    public void goStraight() {
-        direction = SAMBA_STRAIGHT;
+    public void stayStill() {
+        direction = SAMBA_STILL;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class AssetManager {
         music.setVolume(0.7f);
         music.setLooping(true);
 
-        music2 = Gdx.audio.newMusic(Gdx.files.internal("musicaMenu.mp3"));
+        music2 = Gdx.audio.newMusic(Gdx.files.internal("musicaMain.mp3"));
         music2.setVolume(0.7f);
         music2.setLooping(true);
 

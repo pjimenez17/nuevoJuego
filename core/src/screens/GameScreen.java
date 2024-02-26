@@ -160,7 +160,7 @@ public class GameScreen implements Screen {
             }
             if (scrollHandler.collides(samba)) {
                 stage.getRoot().findActor("samba").remove();
-                AssetManager.dead.play();
+                //AssetManager.dead.play();
                 gameOver = true;
                 game.setScreen(new DeathScreen(game, points)); // Cambia a la pantalla de muerte cuando el jugador muere
 

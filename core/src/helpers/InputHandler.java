@@ -1,4 +1,5 @@
 package helpers;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
 import objects.samba;
@@ -9,7 +10,7 @@ public class InputHandler implements InputProcessor{
     private samba samba;
     private GameScreen screen;
 
-    int previousY = 0;
+    int previousX = 0;
 
     public InputHandler(GameScreen screen) {
         this.screen = screen;
@@ -18,11 +19,30 @@ public class InputHandler implements InputProcessor{
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        switch (keycode) {
+            case Input.Keys.W:
+                // Aquí puedes agregar la lógica para mover a Samba hacia arriba
+                break;
+            case Input.Keys.A:
+                samba.goLeft();
+                break;
+            case Input.Keys.S:
+                // Aquí puedes agregar la lógica para mover a Samba hacia abajo
+                break;
+            case Input.Keys.D:
+                samba.goRight();
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        if (keycode == Input.Keys.A || keycode == Input.Keys.D) {
+            samba.stayStill();
+        }
         return false;
     }
 
@@ -33,13 +53,13 @@ public class InputHandler implements InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        previousY = screenY;
+        previousX = screenX;
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        samba.goStraight();
+        samba.stayStill();
         return false;
     }
 
@@ -50,13 +70,13 @@ public class InputHandler implements InputProcessor{
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if(Math.abs(previousY - screenY) > 2) {
-            if(previousY > screenY) { // Si arrastras hacia arriba
-                samba.goDown();
+        if(Math.abs(previousX - screenX) > 2) {
+            if(previousX > screenX) { // Si arrastras hacia la izquierda
+                samba.goLeft();
             } else {
-                samba.goUp();
+                samba.goRight();
             }
-            previousY = screenY;
+            previousX = screenX;
             return true;
         }
         return false;
