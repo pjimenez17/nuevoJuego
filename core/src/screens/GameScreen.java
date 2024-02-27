@@ -57,7 +57,6 @@ public class GameScreen implements Screen {
         batch = stage.getBatch();
         samba = new samba(Settings.SAMBA_STARTX, Settings.SAMBA_STARTY, Settings.SAMBA_WIDTH, Settings.SAMBA_HEIGHT);
         scrollHandler = new ScrollHandler();
-        mascarasBona = scrollHandler.getMascarasBona();
         stage.addActor(scrollHandler);
         stage.addActor(samba);
         samba.setName("samba");
@@ -143,22 +142,8 @@ public class GameScreen implements Screen {
         stage.act(delta);
 
         if (!gameOver) {
-            for(MascaraBona mascaraBona: mascarasBona){
-                if(mascaraBona.collides(samba)){
-                    AssetManager.collect.play();
-                    points++; // Incrementa el contador de puntos
-                    float newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA) * 34;
-                    mascaraBona.reset(Settings.GAME_WIDTH + r.nextInt(Settings.GAME_WIDTH));
-                    mascaraBona.setWidth(newSize);
-                    mascaraBona.setHeight(newSize);
-                    mascaraBona.setY(r.nextInt(Settings.GAME_HEIGHT - (int) newSize));
-                    if (points >= 50) {
-                        game.setScreen(new WinScreen(game)); // Switch to WinScreen when points reach 50
-                        return;
-                    }
-                }
-            }
-            if (scrollHandler.collides(samba)) {
+
+            if (scrollHandler.collides(samba) ) {
                 stage.getRoot().findActor("samba").remove();
                 //AssetManager.dead.play();
                 gameOver = true;
@@ -169,7 +154,7 @@ public class GameScreen implements Screen {
             batch.begin();
             BitmapFont font = new BitmapFont(false);
             font.getData().setScale(0.7f, 0.7f); // Cambia el tamaño del texto
-            font.draw(batch, "Game Over - Toca per tornar a jugar", 20,20);
+            font.draw(batch, "Game Over - Toca per tornar a jugar", 20, 20);
             batch.end();
 
             if (Gdx.input.justTouched()) {
@@ -177,8 +162,8 @@ public class GameScreen implements Screen {
             }
         }
 
-
     }
+
 
     @Override
     public void resize(int width, int height) {

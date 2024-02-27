@@ -21,7 +21,7 @@ public class InputHandler implements InputProcessor{
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.W:
-                // Aquí puedes agregar la lógica para mover a Samba hacia arriba
+                samba.jump();
                 break;
             case Input.Keys.A:
                 samba.goLeft();
@@ -88,6 +88,9 @@ public class InputHandler implements InputProcessor{
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
+        if (amountY < 0) { // Scroll hacia arriba
+            samba.jump();
+        }
         return false;
     }
 }

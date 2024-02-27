@@ -31,10 +31,10 @@ public class AssetManager {
         background.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
 
-        mascara_malvada = new Texture(Gdx.files.internal("mascara_malvada.png"));
+        mascara_malvada = new Texture(Gdx.files.internal("bat.png"));
         mascara_malvada.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        mascara_bona = new Texture(Gdx.files.internal("mascara_bona.png"));
+        mascara_bona = new Texture(Gdx.files.internal("vampire.png"));
         mascara_bona.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
         music = Gdx.audio.newMusic(Gdx.files.internal("musica.mp3"));

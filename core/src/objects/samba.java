@@ -16,7 +16,13 @@ public class samba extends Actor {
     public static final int SAMBA_LEFT = 1;
     public static final int SAMBA_RIGHT = 2;
 
+    public static final int GRAVITY = -10;
+    public static final int JUMP_VELOCITY = 250;
+    private boolean isJumping;
+    private int jumpCount;
+
     private Vector2 position;
+    private Vector2 velocity;
     private int width, height;
     private int direction;
     private Rectangle collisionRect;
@@ -26,12 +32,23 @@ public class samba extends Actor {
         this.width = width;
         this.height = height;
         position = new Vector2(x, y);
+        velocity = new Vector2(0, 0);
 
         direction = SAMBA_STILL;
         collisionRect = new Rectangle();
 
+        isJumping = false;
+        jumpCount = 0;
+
     }
 
+    public void jump() {
+        if (!isJumping || jumpCount < 2) {
+            isJumping = true;
+            jumpCount++;
+            velocity.y = JUMP_VELOCITY;
+        }
+    }
     public void act(float delta) {
         switch(direction){
             case SAMBA_LEFT:
@@ -46,6 +63,24 @@ public class samba extends Actor {
                 break;
             case SAMBA_STILL:
                 break;
+        }
+        if (isJumping) {
+            velocity.y += GRAVITY;
+            position.y += velocity.y * delta;
+
+            if (position.y <= Settings.SAMBA_STARTY) {
+                isJumping = false;
+                jumpCount = 0;
+                velocity.y = 0;
+            }
+        }
+        // Si Samba está por debajo de SAMBA_STARTY, aumenta su posición
+        // gradualmente hasta que llegue a SAMBA_STARTY
+        if (position.y < Settings.SAMBA_STARTY) {
+            position.y += 5 * delta;
+            if (position.y > Settings.SAMBA_STARTY) {
+                position.y = Settings.SAMBA_STARTY;
+            }
         }
         collisionRect.set(position.x, position.y + 3, width, 10);
     }

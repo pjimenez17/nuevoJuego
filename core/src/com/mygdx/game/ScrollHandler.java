@@ -39,42 +39,33 @@ public class ScrollHandler extends Group {
 
         numMascaras = 3;
         numMascaresBona = 3;
+        float newSize = 30;
 
         // Creem l'ArrayList
         mascaras = new ArrayList<mascara>();
         mascarasBona = new ArrayList<>();
 
+        // Creación de las mascaras especiales
         for (int i = 0; i < numMascaresBona; i++) {
-            float newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA) * 34;
-            MascaraBona mascaraBona = new MascaraBona(Settings.GAME_WIDTH, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.MASCARA_SPEED);
+            float xPos = Settings.GAME_WIDTH; // Posición fija en el borde derecho de la pantalla
+            float yPos = Settings.SAMBA_STARTY; // Altura fija
+            MascaraBona mascaraBona = new MascaraBona(xPos, yPos, newSize, newSize, Settings.MASCARA_SPEED);
             mascarasBona.add(mascaraBona);
             addActor(mascaraBona);
         }
 
 
-        // Definim una mida aleatòria entre el mínim i el màxim
-        float newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA) * 34;
-
-        mascara mascara = new mascara(Settings.GAME_WIDTH, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.MASCARA_SPEED);
-        mascaras.add(mascara);
-        addActor(mascara);
-
-
-
-        for (int i = 1; i < numMascaras; i++) {
-            // Creem la mida aleatòria
-            newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA) * 34;
-            mascara = new mascara(mascaras.get(mascaras.size() - 1).getTailX() + Settings.MASCARA_GAP, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.MASCARA_SPEED);
+        for (int i = 0; i < numMascaras; i++) {
+            float xPos = Settings.GAME_WIDTH; // Posición fija en el borde derecho de la pantalla
+            float yPos = Settings.SAMBA_STARTY; // Altura fija
+            mascara mascara = new mascara(xPos, yPos, newSize, newSize, Settings.MASCARA_SPEED);
             mascaras.add(mascara);
             addActor(mascara);
         }
-        for (int i = 1; i < numMascaresBona; i++) {
-            // Creem la mida aleatòria
-            newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA) * 34;
-            MascaraBona mascaraBona = new MascaraBona(mascarasBona.get(mascarasBona.size() - 1).getTailX() + Settings.MASCARA_GAP, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.MASCARA_SPEED);
-            mascarasBona.add(mascaraBona);
-            addActor(mascaraBona);
-        }
+
+
+
+
 
     }
     public boolean collides(samba smb){

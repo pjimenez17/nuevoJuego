@@ -16,23 +16,41 @@ import helpers.AssetManager;
 public class mascara extends Scrollable {
     private float runTime;
     private Circle collisionCircle;
+    private float timer;
+    private boolean direction;
+    private float velocity;
+
     public mascara(float x, float y, float width, float height, float velocity) {
         super(x, y, width, height, velocity);
+        this.velocity = velocity;
         runTime = Methods.randomFloat(0,1);
         collisionCircle = new Circle();
+        timer = 0;
+        direction = new Random().nextBoolean();
+
 
     }
     @Override
     public void act(float delta) {
         super.act(delta);
         runTime += delta;
+        timer += delta;
+        if (timer > 3) {
+            reset(Settings.GAME_WIDTH);
+            timer = 0;
+            direction = !direction;
+        }if (direction) {
+            position.x += velocity * delta;
+        } else {
+            position.x -= velocity * delta;
+        }
         collisionCircle.set(position.x + width / 2.0f, position.y + width / 2.0f, width / 2.0f);
     }
     public void reset(float newX) {
         super.reset(newX);
-        float newSize = Methods.randomFloat(Settings.MIN_MASCARA, Settings.MAX_MASCARA);
+        float newSize = 30;
         width = height = 20 * newSize;
-        position.y = new Random().nextInt((int) (Settings.GAME_HEIGHT - (int)height));
+        position.y = Settings.SAMBA_STARTY;
     }
     public float getRunTime() {
 
