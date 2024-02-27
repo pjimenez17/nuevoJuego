@@ -23,6 +23,7 @@ public class mascara extends Scrollable {
     private static Float initialSize = null;
 
 
+
     public mascara(float x, float y, float width, float height, float velocity) {
         super(x, y, width, height, velocity);
         this.velocity = velocity;
@@ -39,6 +40,7 @@ public class mascara extends Scrollable {
     @Override
     public void act(float delta) {
         super.act(delta);
+
         runTime += delta;
         timer += delta;
 

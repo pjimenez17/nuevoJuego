@@ -32,6 +32,8 @@ public class samba extends Actor {
     private int width, height;
     private int direction;
     private Rectangle collisionRect;
+    private float attackTime;
+    public boolean isAttacking;
 
 
     public samba(float x, float y, int width, int height) {
@@ -46,9 +48,18 @@ public class samba extends Actor {
         isJumping = false;
         jumpCount = 0;
 
+        isAttacking = false;
+
     }
 
+    public void attack() {
+        if (!isAttacking) {
+            isAttacking = true;
+            attackTime = 0.5f;
+            collisionRect.width = width * 200;
 
+        }
+    }
 
     public void jump() {
         if (!isJumping || jumpCount < 2) {
@@ -57,6 +68,7 @@ public class samba extends Actor {
             velocity.y = JUMP_VELOCITY;
         }
     }
+    @Override
     public void act(float delta) {
         switch(direction){
             case SAMBA_LEFT:
@@ -72,6 +84,19 @@ public class samba extends Actor {
             case SAMBA_STILL:
                 break;
         }
+
+        if (isAttacking) {
+            attackTime -= delta;
+            if (attackTime <= 0) {
+                isAttacking = false;
+                // Reset the width of the attackRect after the attack
+                collisionRect.width = width;
+            } else {
+                // Extend the width of the attackRect during the attack
+                collisionRect.width = width * 200;
+            }
+        }
+
         if (isJumping) {
             velocity.y += GRAVITY;
             position.y += velocity.y * delta;
@@ -82,6 +107,7 @@ public class samba extends Actor {
                 velocity.y = 0;
             }
         }
+
         // Si Samba está por debajo de SAMBA_STARTY, aumenta su posición
         // gradualmente hasta que llegue a SAMBA_STARTY
         if (position.y < Settings.SAMBA_STARTY) {
@@ -90,6 +116,8 @@ public class samba extends Actor {
                 position.y = Settings.SAMBA_STARTY;
             }
         }
+
+        // Update the attack hitbox
         collisionRect.set(position.x, position.y + 3, width, 10);
     }
     // Getters dels atributs principals
@@ -145,6 +173,10 @@ public class samba extends Actor {
 
     public Texture getSambaTexture() {
         return AssetManager.samba;
+    }
+
+    public boolean isAttacking() {
+        return isAttacking;
     }
 
 

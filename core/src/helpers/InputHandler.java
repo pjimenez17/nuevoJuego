@@ -33,6 +33,8 @@ public class InputHandler implements InputProcessor{
             case Input.Keys.D:
                 samba.goRight();
                 break;
+            case Input.Keys.P:
+                samba.attack();
             default:
                 return false;
         }

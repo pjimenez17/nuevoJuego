@@ -69,9 +69,12 @@ public class GameScreen implements Screen {
             shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
-            shapeRenderer.setColor(new Color(0,1,0,1));
+            if (samba.isAttacking()) {
+                shapeRenderer.setColor(Color.RED);
+            } else {
+                shapeRenderer.setColor(new Color(0,1,0,1));
+            }
             shapeRenderer.rect(samba.getX(), samba.getY(), samba.getWidth(), samba.getHeight());
-
             ArrayList<mascara> mascaras = scrollHandler.getMascaras();
             mascara mascara;
 
