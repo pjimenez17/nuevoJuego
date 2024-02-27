@@ -51,13 +51,7 @@ public class MascaraBona extends Scrollable {
         super.draw(batch, parentAlpha);
         batch.draw(AssetManager.mascara_bona, position.x, position.y, width, height);
 
-        // Draw the hitbox
-        batch.end();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(1, 0, 0, 1); // Red color
-        shapeRenderer.rect(collisionRect.x, collisionRect.y, collisionRect.width, collisionRect.height);
-        shapeRenderer.end();
-        batch.begin();
+
     }
 
     public boolean collides(samba smb){
@@ -65,5 +59,9 @@ public class MascaraBona extends Scrollable {
             return (Intersector.overlaps(collisionRect, smb.getCollisionRect()));
         }
         return false;
+    }
+
+    public Rectangle getCollisionRect() {
+        return collisionRect;
     }
 }

@@ -21,6 +21,7 @@ public class InputHandler implements InputProcessor{
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.W:
+            case Input.Keys.SPACE:
                 samba.jump();
                 break;
             case Input.Keys.A:
@@ -31,6 +32,9 @@ public class InputHandler implements InputProcessor{
                 break;
             case Input.Keys.D:
                 samba.goRight();
+                break;
+            case Input.Keys.P:
+                samba.attack();
                 break;
             default:
                 return false;

@@ -2,10 +2,14 @@ package objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Timer;
+
 import helpers.AssetManager;
 import utils.Settings;
 
@@ -16,8 +20,10 @@ public class samba extends Actor {
     public static final int SAMBA_LEFT = 1;
     public static final int SAMBA_RIGHT = 2;
 
+    public static final int SAMBA_ATTACK = 3;
+
     public static final int GRAVITY = -10;
-    public static final int JUMP_VELOCITY = 250;
+    public static final int JUMP_VELOCITY = 350;
     private boolean isJumping;
     private int jumpCount;
 
@@ -42,6 +48,22 @@ public class samba extends Actor {
 
     }
 
+    public boolean attack() {
+        if (direction != SAMBA_ATTACK) {
+            direction = SAMBA_ATTACK;
+            // Establece un tiempo de ataque
+            // Aquí puedes ajustar el tiempo según tus necesidades
+            Timer.schedule(new Timer.Task(){
+                @Override
+                public void run() {
+                    direction = SAMBA_STILL;
+                }
+            }, 1);
+            return true;
+        }
+        return false;
+    }
+
     public void jump() {
         if (!isJumping || jumpCount < 2) {
             isJumping = true;
@@ -62,6 +84,18 @@ public class samba extends Actor {
                 }
                 break;
             case SAMBA_STILL:
+                break;
+            case SAMBA_ATTACK:
+
+                for (Actor actor : getStage().getActors()) {
+                    if (actor instanceof mascara) {
+                        if (Intersector.overlaps(((mascara) actor).getCollisionCircle(), collisionRect)) {
+                        }
+                    } else if (actor instanceof MascaraBona) {
+                        if (Intersector.overlaps(((MascaraBona) actor).getCollisionRect(), collisionRect)) {
+                        }
+                    }
+                }
                 break;
         }
         if (isJumping) {
@@ -89,6 +123,15 @@ public class samba extends Actor {
         return position.x;
     }
 
+    public boolean overlaps(Rectangle rectangle, Circle circle) {
+        float closestX = Math.max(rectangle.x, Math.min(circle.x, rectangle.x + rectangle.width));
+        float closestY = Math.max(rectangle.y, Math.min(circle.y, rectangle.y + rectangle.height));
+
+        float distanceX = circle.x - closestX;
+        float distanceY = circle.y - closestY;
+
+        return (distanceX * distanceX + distanceY * distanceY) <= (circle.radius * circle.radius);
+    }
 
     public float getY() {
         return position.y;

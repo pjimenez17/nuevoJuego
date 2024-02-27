@@ -4,6 +4,7 @@ package screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -142,13 +143,29 @@ public class GameScreen implements Screen {
         stage.act(delta);
 
         if (!gameOver) {
-
-            if (scrollHandler.collides(samba) ) {
-                stage.getRoot().findActor("samba").remove();
-                //AssetManager.dead.play();
-                gameOver = true;
-                game.setScreen(new DeathScreen(game, points)); // Cambia a la pantalla de muerte cuando el jugador muere
-
+            if (samba.attack()) {
+                for (mascara mascara : scrollHandler.getMascaras()) {
+                    if (mascara.collides(samba)) {
+                        AssetManager.collect.play();
+                        points++;
+                        mascara.reset(Settings.GAME_WIDTH + r.nextInt(Settings.GAME_WIDTH));
+                        if (points >= 50) {
+                            game.setScreen(new WinScreen(game));
+                            return;
+                        }
+                    }
+                }
+                for (MascaraBona mascaraBona : scrollHandler.getMascarasBona()) {
+                    if (mascaraBona.collides(samba)) {
+                        AssetManager.collect.play();
+                        points++;
+                        mascaraBona.reset(Settings.GAME_WIDTH + r.nextInt(Settings.GAME_WIDTH));
+                        if (points >= 50) {
+                            game.setScreen(new WinScreen(game));
+                            return;
+                        }
+                    }
+                }
             }
         } else {
             batch.begin();
