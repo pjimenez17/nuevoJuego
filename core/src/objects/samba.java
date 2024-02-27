@@ -48,21 +48,7 @@ public class samba extends Actor {
 
     }
 
-    public boolean attack() {
-        if (direction != SAMBA_ATTACK) {
-            direction = SAMBA_ATTACK;
-            // Establece un tiempo de ataque
-            // Aquí puedes ajustar el tiempo según tus necesidades
-            Timer.schedule(new Timer.Task(){
-                @Override
-                public void run() {
-                    direction = SAMBA_STILL;
-                }
-            }, 1);
-            return true;
-        }
-        return false;
-    }
+
 
     public void jump() {
         if (!isJumping || jumpCount < 2) {
@@ -84,18 +70,6 @@ public class samba extends Actor {
                 }
                 break;
             case SAMBA_STILL:
-                break;
-            case SAMBA_ATTACK:
-
-                for (Actor actor : getStage().getActors()) {
-                    if (actor instanceof mascara) {
-                        if (Intersector.overlaps(((mascara) actor).getCollisionCircle(), collisionRect)) {
-                        }
-                    } else if (actor instanceof MascaraBona) {
-                        if (Intersector.overlaps(((MascaraBona) actor).getCollisionRect(), collisionRect)) {
-                        }
-                    }
-                }
                 break;
         }
         if (isJumping) {

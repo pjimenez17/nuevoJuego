@@ -1,15 +1,15 @@
 package com.mygdx.game;
+
 import com.badlogic.gdx.scenes.scene2d.Group;
-
-import java.util.ArrayList;
-import java.util.Random;
-
 import objects.MascaraBona;
 import objects.mascara;
 import objects.Background;
 import objects.samba;
 import utils.Methods;
 import utils.Settings;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class ScrollHandler extends Group {
 
@@ -19,7 +19,6 @@ public class ScrollHandler extends Group {
     int numMascaras, numMascaresBona;
     ArrayList<mascara> mascaras;
     ArrayList<MascaraBona> mascarasBona;
-
 
     // Objecte Random
     Random r;
@@ -54,7 +53,6 @@ public class ScrollHandler extends Group {
             addActor(mascaraBona);
         }
 
-
         for (int i = 0; i < numMascaras; i++) {
             float xPos = Settings.GAME_WIDTH; // Posición fija en el borde derecho de la pantalla
             float yPos = Settings.SAMBA_STARTY; // Altura fija
@@ -62,12 +60,8 @@ public class ScrollHandler extends Group {
             mascaras.add(mascara);
             addActor(mascara);
         }
-
-
-
-
-
     }
+
     public boolean collides(samba smb){
         for(mascara mascara : mascaras){
             if(mascara.collides(smb)){
@@ -80,34 +74,24 @@ public class ScrollHandler extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
-        // Si algun element es troba fora de la pantalla, fem un reset de l'element
+
         if (bg.isLeftOfScreen()) {
             bg.reset(bg_back.getTailX());
-
         } else if (bg_back.isLeftOfScreen()) {
             bg_back.reset(bg.getTailX());
-
         }
 
-        for (int i = 0; i < mascaras.size(); i++) {
-
-            mascara mascara = mascaras.get(i);
+        for (mascara mascara : mascaras) {
             if (mascara.isLeftOfScreen()) {
-                if (i == 0) {
-                    mascara.reset(mascaras.get(mascaras.size() - 1).getTailX() + Settings.MASCARA_GAP);
-                } else {
-                    mascara.reset(mascaras.get(i - 1).getTailX() + Settings.MASCARA_GAP);
-                }
+                // Restablece la posición x a un valor aleatorio en el lado derecho de la pantalla
+                mascara.reset(Settings.GAME_WIDTH + r.nextInt(Settings.GAME_WIDTH));
             }
         }
-        for (int i = 0; i < mascarasBona.size(); i++) {
-            MascaraBona mascaraBona = mascarasBona.get(i);
+
+        for (MascaraBona mascaraBona : mascarasBona) {
             if (mascaraBona.isLeftOfScreen()) {
-                if (i == 0) {
-                    mascaraBona.reset(mascarasBona.get(mascarasBona.size() - 1).getTailX() + Settings.MASCARA_GAP);
-                } else {
-                    mascaraBona.reset(mascarasBona.get(i - 1).getTailX() + Settings.MASCARA_GAP);
-                }
+                // Restablece la posición x a un valor aleatorio en el lado derecho de la pantalla
+                mascaraBona.reset(Settings.GAME_WIDTH + r.nextInt(Settings.GAME_WIDTH));
             }
         }
     }
@@ -115,6 +99,7 @@ public class ScrollHandler extends Group {
     public ArrayList<mascara> getMascaras() {
         return mascaras;
     }
+
     public ArrayList<MascaraBona> getMascarasBona() {
         return mascarasBona;
     }

@@ -65,59 +65,59 @@ public class GameScreen implements Screen {
     }
 
     private void drawElements() {
-        //Gdx.gl20.glClearColor(0, 0, 0, 1);
-        //Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (shapeRenderer != null && samba != null && scrollHandler.getMascaras() != null && scrollHandler.getMascarasBona() != null) {
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
-        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(new Color(0,1,0,1));
+            shapeRenderer.rect(samba.getX(), samba.getY(), samba.getWidth(), samba.getHeight());
 
-        shapeRenderer.setColor(new Color(0,1,0,1));
-        shapeRenderer.rect(samba.getX(), samba.getY(), samba.getWidth(), samba.getHeight());
+            ArrayList<mascara> mascaras = scrollHandler.getMascaras();
+            mascara mascara;
 
-
-
-
-        ArrayList<mascara> mascaras = scrollHandler.getMascaras();
-        mascara mascara;
-
-        for(int i = 0; i< mascaras.size(); i++) {
-            mascara = mascaras.get(i);
-            switch(i){
-                case 0:
-                    shapeRenderer.setColor(new Color(1,0,0,1));
-                    break;
-                case 1:
-                    shapeRenderer.setColor(new Color(0,0,1,1));
-                    break;
-                case 2:
-                    shapeRenderer.setColor(new Color(1,1,0,1));
-                    break;
-                default:
-                    shapeRenderer.setColor(new Color(1,1,1,1));
-                    break;
+            for(int i = 0; i< mascaras.size(); i++) {
+                mascara = mascaras.get(i);
+                switch(i){
+                    case 0:
+                        shapeRenderer.setColor(new Color(1,0,0,1));
+                        break;
+                    case 1:
+                        shapeRenderer.setColor(new Color(0,0,1,1));
+                        break;
+                    case 2:
+                        shapeRenderer.setColor(new Color(1,1,0,1));
+                        break;
+                    default:
+                        shapeRenderer.setColor(new Color(1,1,1,1));
+                        break;
+                }
+                shapeRenderer.circle(mascara.getX() + mascara.getWidth()/2, mascara.getY()+ mascara.getWidth()/2, mascara.getWidth()/2);
             }
-            shapeRenderer.circle(mascara.getX() + mascara.getWidth()/2, mascara.getY()+ mascara.getWidth()/2, mascara.getWidth()/2);
-        }
-        for(int i = 0; i< mascarasBona.size(); i++) {
-            MascaraBona mascaraBona = mascarasBona.get(i);
-            switch(i){
-                case 0:
-                    shapeRenderer.setColor(new Color(1,0,0,1));
-                    break;
-                case 1:
-                    shapeRenderer.setColor(new Color(0,0,1,1));
-                    break;
-                case 2:
-                    shapeRenderer.setColor(new Color(1,1,0,1));
-                    break;
-                default:
-                    shapeRenderer.setColor(new Color(1,1,1,1));
-                    break;
-            }
-            shapeRenderer.circle(mascaraBona.getX() + mascaraBona.getWidth()/2, mascaraBona.getY()+ mascaraBona.getWidth()/2, mascaraBona.getWidth()/2);
-        }
 
-        shapeRenderer.end();
+            ArrayList<MascaraBona> mascarasBona = scrollHandler.getMascarasBona();
+            MascaraBona mascaraBona;
+
+            for(int i = 0; i< mascarasBona.size(); i++) {
+                mascaraBona = mascarasBona.get(i);
+                switch(i){
+                    case 0:
+                        shapeRenderer.setColor(new Color(1,0,0,1));
+                        break;
+                    case 1:
+                        shapeRenderer.setColor(new Color(0,0,1,1));
+                        break;
+                    case 2:
+                        shapeRenderer.setColor(new Color(1,1,0,1));
+                        break;
+                    default:
+                        shapeRenderer.setColor(new Color(1,1,1,1));
+                        break;
+                }
+                shapeRenderer.circle(mascaraBona.getX() + mascaraBona.getWidth()/2, mascaraBona.getY()+ mascaraBona.getWidth()/2, mascaraBona.getWidth()/2);
+            }
+
+            shapeRenderer.end();
+        }
     }
 
     public Stage getStage() {
@@ -141,30 +141,19 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         stage.draw();
         stage.act(delta);
+        drawElements();
 
         if (!gameOver) {
-            if (samba.attack()) {
-                for (mascara mascara : scrollHandler.getMascaras()) {
-                    if (mascara.collides(samba)) {
-                        AssetManager.collect.play();
-                        points++;
-                        mascara.reset(Settings.GAME_WIDTH + r.nextInt(Settings.GAME_WIDTH));
-                        if (points >= 50) {
-                            game.setScreen(new WinScreen(game));
-                            return;
-                        }
-                    }
+            for (mascara mascara : scrollHandler.getMascaras()) {
+                if (mascara.collides(samba)) {
+                    gameOver = true;
+                    return;
                 }
-                for (MascaraBona mascaraBona : scrollHandler.getMascarasBona()) {
-                    if (mascaraBona.collides(samba)) {
-                        AssetManager.collect.play();
-                        points++;
-                        mascaraBona.reset(Settings.GAME_WIDTH + r.nextInt(Settings.GAME_WIDTH));
-                        if (points >= 50) {
-                            game.setScreen(new WinScreen(game));
-                            return;
-                        }
-                    }
+            }
+            for (MascaraBona mascaraBona : scrollHandler.getMascarasBona()) {
+                if (mascaraBona.collides(samba)) {
+                    gameOver = true;
+                    return;
                 }
             }
         } else {
@@ -178,7 +167,6 @@ public class GameScreen implements Screen {
                 restartGame();
             }
         }
-
     }
 
 

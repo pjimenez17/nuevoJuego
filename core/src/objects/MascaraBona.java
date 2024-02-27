@@ -17,27 +17,36 @@ public class MascaraBona extends Scrollable {
     private float runTime;
     private Rectangle collisionRect;
     private ShapeRenderer shapeRenderer;
+    private static Float initialSize = null;
+
 
     public MascaraBona(float x, float y, float width, float height, float velocity) {
         super(x, y, width, height, velocity);
         runTime = Methods.randomFloat(0,1);
         collisionRect = new Rectangle();
         shapeRenderer = new ShapeRenderer();
+        if (initialSize == null) {
+            // Si no se ha establecido, lo establece al tamaño del objeto MascaraBona actual
+            initialSize = height;
+        }
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
         runTime += delta;
-        float hitboxHeight = height - 300; // Subtract 10 from the height
-        float hitboxY = position.y + 10; // Add 10 to the y position of the hitbox
-        collisionRect.set(position.x, hitboxY, width, hitboxHeight); // Update the Rectangle
+
+        collisionRect.set(position.x, position.y, width, height); // Update the Rectangle
     }
 
     public void reset(float newX) {
         super.reset(newX);
-        width = 20; // Establece el ancho a un valor fijo
-        height = width * 2; // Hace que el alto sea el doble del ancho
+        // Usa initialSize para establecer el tamaño del objeto MascaraBona
+        if (initialSize != null) {
+            this.height = initialSize;
+            this.width = initialSize;
+        }
+
         position.y = Settings.SAMBA_STARTY;
         position.x = Settings.GAME_WIDTH;
     }

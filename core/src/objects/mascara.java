@@ -20,6 +20,8 @@ public class mascara extends Scrollable {
     private float timer;
     private boolean direction;
     private float velocity;
+    private static Float initialSize = null;
+
 
     public mascara(float x, float y, float width, float height, float velocity) {
         super(x, y, width, height, velocity);
@@ -27,8 +29,11 @@ public class mascara extends Scrollable {
         runTime = Methods.randomFloat(0,1);
         collisionCircle = new Circle();
         timer = 0;
-        direction = new Random().nextBoolean();
-
+        direction = true;
+        if (initialSize == null) {
+            // Si no se ha establecido, lo establece al tamaño del objeto mascara actual
+            initialSize = height;
+        }
 
     }
     @Override
@@ -36,22 +41,16 @@ public class mascara extends Scrollable {
         super.act(delta);
         runTime += delta;
         timer += delta;
-        if (timer > 3) {
-            reset(Settings.GAME_WIDTH);
-            timer = 0;
-            direction = !direction;
-        }if (direction) {
-            position.x += velocity * delta;
-        } else {
-            position.x -= velocity * delta;
-        }
+
         collisionCircle.set(position.x + width / 2.0f, position.y + width / 2.0f, width / 2.0f);
     }
     public void reset(float newX) {
         super.reset(newX);
-        float newSize = 30;
-        width = height = 20 * newSize;
-        position.y = Settings.SAMBA_STARTY;
+        if (initialSize != null) {
+            this.height = initialSize;
+            this.width = initialSize;
+        }
+        position.y = Settings.SAMBA_STARTY+10;
     }
     public float getRunTime() {
 

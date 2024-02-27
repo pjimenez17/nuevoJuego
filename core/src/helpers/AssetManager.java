@@ -53,6 +53,8 @@ public class AssetManager {
 
     public static void dispose() {
         samba.dispose();
+        mascara_bona.dispose();
+        mascara_malvada.dispose();
         explosionSound.dispose();
         music.dispose();
     }
