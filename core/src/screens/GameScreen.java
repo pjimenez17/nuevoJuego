@@ -9,10 +9,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import helpers.AssetManager;
@@ -42,6 +44,8 @@ public class GameScreen implements Screen {
     // Per obtenir el batch de l'stage
     private Batch batch;
     private int points = 0; // Añade un contador de puntos
+
+
     private ArrayList<MascaraBona> mascarasBona;
 
 
@@ -70,7 +74,8 @@ public class GameScreen implements Screen {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
             if (samba.isAttacking()) {
-                shapeRenderer.setColor(Color.RED);
+                Rectangle attackRect = samba.getAttackRect();
+                shapeRenderer.rect(attackRect.x, attackRect.y, attackRect.width, attackRect.height);
             } else {
                 shapeRenderer.setColor(new Color(0,1,0,1));
             }
@@ -147,14 +152,31 @@ public class GameScreen implements Screen {
         drawElements();
 
         if (!gameOver) {
+            boolean hasHandledCollision = false;
             for (mascara mascara : scrollHandler.getMascaras()) {
-                if (mascara.collides(samba)) {
+                if (!hasHandledCollision && samba.overlaps(samba.getAttackRect(), mascara.getCollisionCircle())) {
+                    points++;
+                    if (!AssetManager.stab.isPlaying()) {
+                        AssetManager.stab.play();
+                    }
+                    float newX = Settings.GAME_WIDTH + r.nextFloat() * 100; // Reset en una posición aleatoria fuera de la pantalla
+                    mascara.reset(newX); // Use the mascara object from the list
+                    hasHandledCollision = true;
+                } else if (mascara.collides(samba)) {
                     gameOver = true;
                     return;
                 }
             }
             for (MascaraBona mascaraBona : scrollHandler.getMascarasBona()) {
-                if (mascaraBona.collides(samba)) {
+                if (!hasHandledCollision && samba.getAttackRect().overlaps(mascaraBona.getCollisionRect())) {
+                    points++;
+                    if (!AssetManager.stab.isPlaying()) {
+                        AssetManager.stab.play();
+                    }
+                    float newX = Settings.GAME_WIDTH + r.nextFloat() * 100; // Reset en una posición aleatoria fuera de la pantalla
+                    mascaraBona.reset(newX); // Use the mascaraBona object from the list
+                    hasHandledCollision = true;
+                } else if (mascaraBona.collides(samba)) {
                     gameOver = true;
                     return;
                 }
@@ -163,15 +185,15 @@ public class GameScreen implements Screen {
             batch.begin();
             BitmapFont font = new BitmapFont(false);
             font.getData().setScale(0.7f, 0.7f); // Cambia el tamaño del texto
-            font.draw(batch, "Game Over - Toca per tornar a jugar", 20, 20);
+            font.draw(batch, "Game Over - Toca per tornar a jugar: " + points, 20, 20);
             batch.end();
 
             if (Gdx.input.justTouched()) {
                 restartGame();
+                points = 0;
             }
         }
     }
-
 
     @Override
     public void resize(int width, int height) {

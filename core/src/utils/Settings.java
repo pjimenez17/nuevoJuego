@@ -6,8 +6,8 @@ public class Settings {
     public static final int GAME_HEIGHT = 135;
 
     public static final float SAMBA_VELOCITY = 90;
-    public static final int SAMBA_WIDTH = 30;
-    public static final int SAMBA_HEIGHT = 30;
+    public static final int SAMBA_WIDTH = 32;
+    public static final int SAMBA_HEIGHT = 32;
     public static final float SAMBA_STARTX = 20;
     public static final float SAMBA_STARTY = 34;
     public static final float MAX_MASCARA = 1.5f;

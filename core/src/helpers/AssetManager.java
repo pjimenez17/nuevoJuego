@@ -11,8 +11,8 @@ public class AssetManager {
     public static Sound explosionSound;
     public static Music music;
     public static Music music2;
-    public static Sound dead;
-    public static Sound collect;
+    public static Music attack;
+    public static Music stab;
 
     // Sprite Sheet
     public static Texture samba;
@@ -20,11 +20,73 @@ public class AssetManager {
     public static Texture mascara_malvada;
     public static Texture mascara_bona;
     public static float originalMusicVolume = 0.7f;
+    // TextureRegions
+    public static TextureRegion sambaLeftRegion[];
+    public static Animation sambaLeftAnimation;
+    public static TextureRegion sambaRightRegion[];
+    public static Animation sambaRightAnimation;
+    public static TextureRegion sambaJumpLeftRegion[];
+    public static Animation sambaJumpLeftAnimation;
+    public static TextureRegion sambaJumpRightRegion[];
+    public static Animation sambaJumpRightAnimation;
+    public static TextureRegion sambaDeadRegion[];
+    public static Animation sambaDeadAnimation;
+    public static TextureRegion sambaAttackLeftRegion[];
+    public static Animation sambaAttackLeftAnimation;
+    public static TextureRegion sambaAttackRightRegion[];
+    public static Animation sambaAttackRightAnimation;
+
 
 
     public static void load() {
-        samba = new Texture(Gdx.files.internal("samba.png"));
+        samba = new Texture(Gdx.files.internal("sprite_sheet.png"));
         samba.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+        sambaLeftRegion = new TextureRegion[9];
+        for(int i = 0; i < 9; i++) {
+            sambaLeftRegion[i] = new TextureRegion(samba, i * 25, 20, 32, 32);
+        }
+        sambaLeftAnimation = new Animation(0.5f, sambaLeftRegion);
+        sambaLeftAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        sambaRightRegion = new TextureRegion[9];
+        for(int i = 0; i < 9; i++) {
+            sambaRightRegion[i] = new TextureRegion(samba, i * 25, 120, 30, 30);
+        }
+        sambaRightAnimation = new Animation(0.5f, sambaRightRegion);
+        sambaRightAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        sambaJumpLeftRegion = new TextureRegion[7];
+        for(int i = 0; i < 7; i++) {
+            sambaJumpLeftRegion[i] = new TextureRegion(samba, i * 32, 96, 32, 32);
+        }
+        sambaJumpLeftAnimation = new Animation(0.5f, sambaJumpLeftRegion);
+        sambaJumpLeftAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+        sambaJumpRightRegion = new TextureRegion[7];
+        for(int i = 0; i < 7; i++) {
+            sambaJumpRightRegion[i] = new TextureRegion(samba, i * 32, 64, 32, 32);
+        }
+        sambaJumpRightAnimation = new Animation(0.5f, sambaJumpRightRegion);
+        sambaJumpRightAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+        sambaDeadRegion = new TextureRegion[6];
+        for(int i = 0; i < 6; i++) {
+            sambaDeadRegion[i] = new TextureRegion(samba, i * 32, 160, 32, 32);
+        }
+        sambaDeadAnimation = new Animation(0.5f, sambaDeadRegion);
+        sambaDeadAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        sambaAttackLeftRegion = new TextureRegion[5];
+        for(int i = 0; i < 5; i++) {
+            sambaAttackLeftRegion[i] = new TextureRegion(samba, i * 32, 192, 32, 32);
+        }
+        sambaAttackLeftAnimation = new Animation(0.5f, sambaAttackLeftRegion);
+        sambaAttackLeftAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+        sambaAttackRightRegion = new TextureRegion[5];
+        for(int i = 0; i < 5; i++) {
+            sambaAttackRightRegion[i] = new TextureRegion(samba, i * 32, 192, 32, 32);
+        }
+        sambaAttackRightAnimation = new Animation(0.5f, sambaAttackRightRegion);
+        sambaAttackRightAnimation.setPlayMode(Animation.PlayMode.NORMAL);
 
         // Cargar la imagen de fondo
         background = new Texture(Gdx.files.internal("background.jpg"));
@@ -45,8 +107,8 @@ public class AssetManager {
         music2.setVolume(0.7f);
         music2.setLooping(true);
 
-        dead = Gdx.audio.newSound(Gdx.files.internal("lose.mp3"));
-        collect = Gdx.audio.newSound(Gdx.files.internal("collect.mp3"));
+        attack = Gdx.audio.newMusic(Gdx.files.internal("attack_effect.mp3"));
+        stab = Gdx.audio.newMusic(Gdx.files.internal("stab.mp3"));
 
 
     }
