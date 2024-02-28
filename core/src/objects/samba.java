@@ -23,6 +23,10 @@ public class samba extends Actor {
     public static final int SAMBA_RIGHT = 2;
 
     public static final int SAMBA_ATTACK = 3;
+    public static final int SAMBA_JUMP_LEFT = 4;
+    public static final int SAMBA_JUMP_RIGHT = 5;
+    public static final int SAMBA_ATTACK_LEFT = 6;
+    public static final int SAMBA_ATTACK_RIGHT = 7;
 
     public static final int GRAVITY = -10;
     public static final int JUMP_VELOCITY = 250;
@@ -71,6 +75,11 @@ public class samba extends Actor {
         if (!isAttacking) {
             isAttacking = true;
             attackTime = 0.5f;
+            if (lastDirection == SAMBA_LEFT) {
+                direction = SAMBA_ATTACK_LEFT;
+            } else if (lastDirection == SAMBA_RIGHT) {
+                direction = SAMBA_ATTACK_RIGHT;
+            }
             attackDirection = lastDirection; // Almacena la dirección en el momento del ataque
 
             AssetManager.attack.play();
@@ -92,6 +101,11 @@ public class samba extends Actor {
             isJumping = true;
             jumpCount++;
             velocity.y = JUMP_VELOCITY;
+            if (lastDirection == SAMBA_LEFT) {
+                direction = SAMBA_JUMP_LEFT;
+            } else if (lastDirection == SAMBA_RIGHT) {
+                direction = SAMBA_JUMP_RIGHT;
+            }
         }
     }
     @Override
@@ -203,38 +217,36 @@ public class samba extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-
-        // Determine which animation to display
-        Animation currentAnimation;
-        if (isAttacking) {
-            if (lastDirection == SAMBA_LEFT) {
-                currentAnimation = AssetManager.sambaAttackLeftAnimation;
-            } else {
-                currentAnimation = AssetManager.sambaAttackRightAnimation;
-            }
-        } else if (isJumping) {
-            if (lastDirection == SAMBA_LEFT) {
-                currentAnimation = AssetManager.sambaJumpLeftAnimation;
-            } else {
-                currentAnimation = AssetManager.sambaJumpRightAnimation;
-            }
-        } else if (direction == SAMBA_LEFT) {
-            currentAnimation = AssetManager.sambaLeftAnimation;
-        } else if (direction == SAMBA_RIGHT) {
-            currentAnimation = AssetManager.sambaRightAnimation;
-        } else {
-            currentAnimation = AssetManager.sambaRightAnimation;
-        }
-
-        // Draw the current frame of the animation
-        batch.draw((TextureRegion) currentAnimation.getKeyFrame(animationTime), position.x, position.y, collisionRect.width, collisionRect.height);
+        batch.draw(getSambaTexture(), position.x, position.y, width, height);
     }
     public Rectangle getCollisionRect() {
         return collisionRect;
     }
 
-    public Texture getSambaTexture() {
-        return AssetManager.samba;
+    public TextureRegion getSambaTexture(){
+        int frameIndex;
+        switch(direction){
+            case SAMBA_LEFT:
+                frameIndex = (int)(animationTime) % AssetManager.sambaLeftRegion.length;
+                return AssetManager.sambaLeftRegion[frameIndex];
+            case SAMBA_RIGHT:
+                frameIndex = (int)(animationTime) % AssetManager.sambaRightRegion.length;
+                return AssetManager.sambaRightRegion[frameIndex];
+            case SAMBA_JUMP_LEFT:
+                frameIndex = (int)(animationTime) % AssetManager.sambaJumpLeftRegion.length;
+                return AssetManager.sambaJumpLeftRegion[frameIndex];
+            case SAMBA_JUMP_RIGHT:
+                frameIndex = (int)(animationTime) % AssetManager.sambaJumpRightRegion.length;
+                return AssetManager.sambaJumpRightRegion[frameIndex];
+            case SAMBA_ATTACK_LEFT:
+                frameIndex = (int)(animationTime) % AssetManager.sambaAttackLeftRegion.length;
+                return AssetManager.sambaAttackLeftRegion[frameIndex];
+            case SAMBA_ATTACK_RIGHT:
+                frameIndex = (int)(animationTime) % AssetManager.sambaAttackRightRegion.length;
+                return AssetManager.sambaAttackRightRegion[frameIndex];
+            default:
+                return AssetManager.sambastill;
+        }
     }
 
     public boolean isAttacking() {
