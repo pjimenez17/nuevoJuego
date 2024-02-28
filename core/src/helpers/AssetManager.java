@@ -86,7 +86,7 @@ public class AssetManager {
         sambaAttackLeftAnimation.setPlayMode(Animation.PlayMode.LOOP);
         sambaAttackRightRegion = new TextureRegion[5];
         for(int i = 0; i < 5; i++) {
-            sambaAttackRightRegion[i] = new TextureRegion(samba, i * 32, 407, 103, 114);
+            sambaAttackRightRegion[i] = new TextureRegion(samba, i * 32, 407, 103, 115);
         }
         sambaAttackRightAnimation = new Animation(0.5f, sambaAttackRightRegion);
         sambaAttackRightAnimation.setPlayMode(Animation.PlayMode.LOOP);
