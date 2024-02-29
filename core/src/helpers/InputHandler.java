@@ -11,6 +11,7 @@ public class InputHandler implements InputProcessor{
     private GameScreen screen;
 
     int previousX = 0;
+    int previousY = 0;
 
     public InputHandler(GameScreen screen) {
         this.screen = screen;
@@ -56,8 +57,9 @@ public class InputHandler implements InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        samba.attack();
         previousX = screenX;
-        return false;
+        return true;
     }
 
     @Override
@@ -80,9 +82,13 @@ public class InputHandler implements InputProcessor{
                 samba.goRight();
             }
             previousX = screenX;
-            return true;
         }
-        return false;
+        // Si arrastras hacia arriba
+        if (screenY > previousY) {
+            samba.jump();
+        }
+        previousY = screenY;
+        return true;
     }
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
@@ -91,9 +97,6 @@ public class InputHandler implements InputProcessor{
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        if (amountY < 0) { // Scroll hacia arriba
-            samba.jump();
-        }
         return false;
     }
 }

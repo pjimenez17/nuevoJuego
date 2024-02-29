@@ -112,6 +112,7 @@ public class samba extends Actor {
             } else if (lastDirection == SAMBA_RIGHT) {
                 direction = SAMBA_JUMP_RIGHT;
             }
+
         }
     }
     @Override
