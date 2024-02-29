@@ -10,6 +10,8 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setTitle("Joc");
 		config.setWindowedMode(Settings.GAME_WIDTH * 2, Settings.GAME_HEIGHT * 2);
+		config.setForegroundFPS(60); // Limita los FPS a 60
+
 		//config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 		new Lwjgl3Application(new SambaRace(), config);
 	}

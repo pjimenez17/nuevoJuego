@@ -49,6 +49,8 @@ public class samba extends Actor {
     private int lastDirection;
     private float animationTime;
     private float runTime;
+    private boolean gameOver;
+
 
 
     public samba(float x, float y, int width, int height) {
@@ -118,6 +120,7 @@ public class samba extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
+
         runTime += delta;
         switch(direction){
             case SAMBA_LEFT:
@@ -228,37 +231,45 @@ public class samba extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        switch(direction){
-            case SAMBA_LEFT:
-                batch.draw((TextureRegion) AssetManager.sambaLeftAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
-                break;
-            case SAMBA_RIGHT:
-                batch.draw((TextureRegion) AssetManager.sambaRightAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
-                break;
-            case SAMBA_JUMP_LEFT:
-                batch.draw((TextureRegion) AssetManager.sambaJumpLeftAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
-                break;
-            case SAMBA_JUMP_RIGHT:
-                batch.draw((TextureRegion) AssetManager.sambaJumpRightAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
-                break;
-            case SAMBA_ATTACK_LEFT:
-                batch.draw((TextureRegion) AssetManager.sambaAttackLeftAnimation.getKeyFrame(runTime), position.x, position.y, attackRect.width, height);
-                break;
-            case SAMBA_ATTACK_RIGHT:
-                batch.draw((TextureRegion) AssetManager.sambaAttackRightAnimation.getKeyFrame(runTime), position.x, position.y, attackRect.width, height);
-                break;
-            default:
-                if (lastDirection == SAMBA_LEFT) {
-                    batch.draw(AssetManager.sambastillL, position.x, position.y, width, height);
-                } else {
-                    batch.draw(AssetManager.sambastillR, position.x, position.y, width, height);
-                }
+        if (gameOver) {
+            batch.draw((TextureRegion) AssetManager.sambaDeadAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
+        }else {
+            switch (direction) {
+                case SAMBA_LEFT:
+                    batch.draw((TextureRegion) AssetManager.sambaLeftAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
+                    break;
+                case SAMBA_RIGHT:
+                    batch.draw((TextureRegion) AssetManager.sambaRightAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
+                    break;
+                case SAMBA_JUMP_LEFT:
+                    batch.draw((TextureRegion) AssetManager.sambaJumpLeftAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
+                    break;
+                case SAMBA_JUMP_RIGHT:
+                    batch.draw((TextureRegion) AssetManager.sambaJumpRightAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
+                    break;
+                case SAMBA_ATTACK_LEFT:
+                    batch.draw((TextureRegion) AssetManager.sambaAttackLeftAnimation.getKeyFrame(runTime), position.x, position.y, attackRect.width, height);
+                    break;
+                case SAMBA_ATTACK_RIGHT:
+                    batch.draw((TextureRegion) AssetManager.sambaAttackRightAnimation.getKeyFrame(runTime), position.x, position.y, attackRect.width, height);
+                    break;
+                default:
+                    if (lastDirection == SAMBA_LEFT) {
+                        batch.draw(AssetManager.sambastillL, position.x, position.y, width, height);
+                    } else {
+                        batch.draw(AssetManager.sambastillR, position.x, position.y, width, height);
+                    }
+            }
         }
+
     }
     public Rectangle getCollisionRect() {
         return collisionRect;
     }
 
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
 
     public boolean isAttacking() {
         return isAttacking;

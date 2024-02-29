@@ -1,17 +1,13 @@
 package objects;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Scrollable;
 import helpers.AssetManager;
 import utils.Methods;
 import utils.Settings;
-
-import java.util.Random;
 
 public class MascaraBona extends Scrollable {
     private float runTime;
@@ -58,7 +54,7 @@ public class MascaraBona extends Scrollable {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        batch.draw(AssetManager.mascara_bona, position.x, position.y, width, height);
+        batch.draw(AssetManager.vampire, position.x, position.y, width, height);
 
 
     }

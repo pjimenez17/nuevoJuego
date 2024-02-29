@@ -149,7 +149,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         stage.draw();
         stage.act(delta);
-        drawElements();
+        //drawElements();
 
         if (!gameOver) {
             boolean hasHandledCollision = false;
@@ -164,6 +164,7 @@ public class GameScreen implements Screen {
                     hasHandledCollision = true;
                 } else if (mascara.collides(samba)) {
                     gameOver = true;
+                    samba.setGameOver(true);
                     return;
                 }
             }
@@ -190,6 +191,7 @@ public class GameScreen implements Screen {
 
             if (Gdx.input.justTouched()) {
                 restartGame();
+                samba.setGameOver(false);
                 points = 0;
             }
         }

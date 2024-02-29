@@ -2,11 +2,8 @@ package objects;
 
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Scrollable;
 import com.badlogic.gdx.graphics.g2d.Batch;
-
-import java.util.Random;
 
 import utils.Methods;
 import utils.Settings;
@@ -61,7 +58,7 @@ public class mascara extends Scrollable {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        batch.draw(AssetManager.mascara_malvada, position.x, position.y, width, height);
+        batch.draw(AssetManager.bat, position.x, position.y, width, height);
     }
     public boolean collides(samba smb){
         if (position.x <= smb.getX() + smb.getWidth()) {
