@@ -13,11 +13,15 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Timer;
 
 import helpers.AssetManager;
+import utils.Methods;
 import utils.Settings;
 
 
 public class samba extends Actor {
 
+
+    private float attackCooldown = 1f; // Tiempo de cooldown en segundos
+    private float timeSinceLastAttack = 0; // Ti
     public static final int SAMBA_STILL = 0;
     public static final int SAMBA_LEFT = 1;
     public static final int SAMBA_RIGHT = 2;
@@ -44,9 +48,7 @@ public class samba extends Actor {
     private int attackDirection;
     private int lastDirection;
     private float animationTime;
-
-
-
+    private float runTime;
 
 
     public samba(float x, float y, int width, int height) {
@@ -55,7 +57,7 @@ public class samba extends Actor {
         position = new Vector2(x, y);
         velocity = new Vector2(0, 0);
 
-        direction = SAMBA_STILL;
+
         collisionRect = new Rectangle();
 
         isJumping = false;
@@ -63,8 +65,10 @@ public class samba extends Actor {
 
         isAttacking = false;
         attackRect = new Rectangle(); // Inicializa el rectángulo de ataque
-        lastDirection = SAMBA_STILL; // Inicializa la última dirección como SAMBA_STILL
+        direction = SAMBA_RIGHT; // Establece la dirección inicial a la derecha
+        lastDirection = SAMBA_RIGHT;
         animationTime = 0;
+        runTime = 0;
 
 
 
@@ -72,7 +76,7 @@ public class samba extends Actor {
     }
 
     public void attack() {
-        if (!isAttacking) {
+        if (!isAttacking && timeSinceLastAttack >= attackCooldown) {
             isAttacking = true;
             attackTime = 0.5f;
             if (lastDirection == SAMBA_LEFT) {
@@ -93,6 +97,8 @@ public class samba extends Actor {
                 // Si samba está quieto, el rectángulo de ataque se extiende hacia arriba
                 attackRect.set(position.x, position.y + height, width, height * 2);
             }
+            timeSinceLastAttack = 0; // Reinicia el tiempo desde el último ataque
+
         }
     }
 
@@ -110,6 +116,8 @@ public class samba extends Actor {
     }
     @Override
     public void act(float delta) {
+        super.act(delta);
+        runTime += delta;
         switch(direction){
             case SAMBA_LEFT:
                 if (this.position.x - Settings.SAMBA_VELOCITY * delta >= 0) {
@@ -131,6 +139,7 @@ public class samba extends Actor {
                 isAttacking = false;
                 // Restablece el rectángulo de ataque después del ataque
                 attackRect.set(0, 0, 0, 0);
+                direction = SAMBA_STILL;
             } else {
                 // Extiende el rectángulo de ataque durante el ataque
                 if (attackDirection == SAMBA_LEFT) {
@@ -151,6 +160,7 @@ public class samba extends Actor {
                 isJumping = false;
                 jumpCount = 0;
                 velocity.y = 0;
+                direction = SAMBA_STILL;
             }
         }
 
@@ -166,7 +176,7 @@ public class samba extends Actor {
         // Update the attack hitbox
         collisionRect.set(position.x, position.y + 3, width, 10);
         animationTime += delta;
-
+        timeSinceLastAttack += delta; // Actualiza el tiempo desde el último ataque
     }
     // Getters dels atributs principals
     public float getX() {
@@ -217,37 +227,37 @@ public class samba extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        batch.draw(getSambaTexture(), position.x, position.y, width, height);
+        switch(direction){
+            case SAMBA_LEFT:
+                batch.draw((TextureRegion) AssetManager.sambaLeftAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
+                break;
+            case SAMBA_RIGHT:
+                batch.draw((TextureRegion) AssetManager.sambaRightAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
+                break;
+            case SAMBA_JUMP_LEFT:
+                batch.draw((TextureRegion) AssetManager.sambaJumpLeftAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
+                break;
+            case SAMBA_JUMP_RIGHT:
+                batch.draw((TextureRegion) AssetManager.sambaJumpRightAnimation.getKeyFrame(runTime), position.x, position.y, width, height);
+                break;
+            case SAMBA_ATTACK_LEFT:
+                batch.draw((TextureRegion) AssetManager.sambaAttackLeftAnimation.getKeyFrame(runTime), position.x, position.y, attackRect.width, height);
+                break;
+            case SAMBA_ATTACK_RIGHT:
+                batch.draw((TextureRegion) AssetManager.sambaAttackRightAnimation.getKeyFrame(runTime), position.x, position.y, attackRect.width, height);
+                break;
+            default:
+                if (lastDirection == SAMBA_LEFT) {
+                    batch.draw(AssetManager.sambastillL, position.x, position.y, width, height);
+                } else {
+                    batch.draw(AssetManager.sambastillR, position.x, position.y, width, height);
+                }
+        }
     }
     public Rectangle getCollisionRect() {
         return collisionRect;
     }
 
-    public TextureRegion getSambaTexture(){
-        int frameIndex;
-        switch(direction){
-            case SAMBA_LEFT:
-                frameIndex = (int)(animationTime) % AssetManager.sambaLeftRegion.length;
-                return AssetManager.sambaLeftRegion[frameIndex];
-            case SAMBA_RIGHT:
-                frameIndex = (int)(animationTime) % AssetManager.sambaRightRegion.length;
-                return AssetManager.sambaRightRegion[frameIndex];
-            case SAMBA_JUMP_LEFT:
-                frameIndex = (int)(animationTime) % AssetManager.sambaJumpLeftRegion.length;
-                return AssetManager.sambaJumpLeftRegion[frameIndex];
-            case SAMBA_JUMP_RIGHT:
-                frameIndex = (int)(animationTime) % AssetManager.sambaJumpRightRegion.length;
-                return AssetManager.sambaJumpRightRegion[frameIndex];
-            case SAMBA_ATTACK_LEFT:
-                frameIndex = (int)(animationTime) % AssetManager.sambaAttackLeftRegion.length;
-                return AssetManager.sambaAttackLeftRegion[frameIndex];
-            case SAMBA_ATTACK_RIGHT:
-                frameIndex = (int)(animationTime) % AssetManager.sambaAttackRightRegion.length;
-                return AssetManager.sambaAttackRightRegion[frameIndex];
-            default:
-                return AssetManager.sambastill;
-        }
-    }
 
     public boolean isAttacking() {
         return isAttacking;

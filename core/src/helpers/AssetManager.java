@@ -37,6 +37,8 @@ public class AssetManager {
     public static Animation sambaAttackLeftAnimation;
     public static TextureRegion sambaAttackRightRegion[];
     public static Animation sambaAttackRightAnimation;
+    public static TextureRegion sambastillL;
+    public static TextureRegion sambastillR;
 
 
 
@@ -44,51 +46,61 @@ public class AssetManager {
         samba = new Texture(Gdx.files.internal("sprite_sheet.png"));
         samba.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        sambastill = new TextureRegion(samba, 25, 2, 103, 114);
+        sambastillR = new TextureRegion(samba, 19, 714, 47, 52);
+        sambastillL = new TextureRegion(samba, 5, 587, 47, 52);
+
         sambaLeftRegion = new TextureRegion[9];
         for(int i = 0; i < 9; i++) {
-            sambaLeftRegion[i] = new TextureRegion(samba, i * 25, 127, 103, 114);
+            sambaLeftRegion[i] = new TextureRegion(samba, i * 19, 588, 54, 50);
         }
-        sambaLeftAnimation = new Animation(0.5f, sambaLeftRegion);
+        sambaLeftAnimation = new Animation(0.06f, sambaLeftRegion);
         sambaLeftAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
         sambaRightRegion = new TextureRegion[9];
         for(int i = 0; i < 9; i++) {
-            sambaRightRegion[i] = new TextureRegion(samba, i * 25, 4, 103, 114);
+            sambaRightRegion[i] = new TextureRegion(samba, i * 19, 717, 54, 50);
         }
-        sambaRightAnimation = new Animation(0.5f, sambaRightRegion);
+        sambaRightAnimation = new Animation(0.06f, sambaRightRegion);
         sambaRightAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
         sambaJumpLeftRegion = new TextureRegion[7];
         for(int i = 0; i < 7; i++) {
-            sambaJumpLeftRegion[i] = new TextureRegion(samba, i * 32, 714, 103, 114);
+            sambaJumpLeftRegion[i] = new TextureRegion(samba, i * 34, 78, 31, 50);
         }
-        sambaJumpLeftAnimation = new Animation(0.5f, sambaJumpLeftRegion);
+        sambaJumpLeftAnimation = new Animation(0.06f, sambaJumpLeftRegion);
         sambaJumpLeftAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
         sambaJumpRightRegion = new TextureRegion[7];
         for(int i = 0; i < 7; i++) {
-            sambaJumpRightRegion[i] = new TextureRegion(samba, i * 32, 833, 103, 114);
+            sambaJumpRightRegion[i] = new TextureRegion(samba, i * 34, 207, 31, 47);
         }
-        sambaJumpRightAnimation = new Animation(0.5f, sambaJumpRightRegion);
+        sambaJumpRightAnimation = new Animation(0.06f, sambaJumpRightRegion);
         sambaJumpRightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
         sambaDeadRegion = new TextureRegion[6];
         for(int i = 0; i < 6; i++) {
-            sambaDeadRegion[i] = new TextureRegion(samba, i * 32, 257, 32, 32);
+            sambaDeadRegion[i] = new TextureRegion(samba, i * 24, 1295, 53, 49);
         }
-        sambaDeadAnimation = new Animation(0.5f, sambaDeadRegion);
+        sambaDeadAnimation = new Animation(0.06f, sambaDeadRegion);
         sambaDeadAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        sambaAttackLeftRegion = new TextureRegion[5];
-        for(int i = 0; i < 5; i++) {
-            sambaAttackLeftRegion[i] = new TextureRegion(samba, i * 32, 558, 103, 114);
+        sambaAttackLeftRegion = new TextureRegion[6];
+        for(int i = 0; i < 6; i++) {
+            if(i == 5){
+                sambaAttackLeftRegion[i] = new TextureRegion(samba, i * 95, 3149, 81, 52);
+            }
+            else{
+                sambaAttackLeftRegion[i] = new TextureRegion(samba, i * 115, 3149, 81, 52);
+            }
         }
-        sambaAttackLeftAnimation = new Animation(0.5f, sambaAttackLeftRegion);
+        sambaAttackLeftAnimation = new Animation(0.06f, sambaAttackLeftRegion);
         sambaAttackLeftAnimation.setPlayMode(Animation.PlayMode.LOOP);
-        sambaAttackRightRegion = new TextureRegion[5];
-        for(int i = 0; i < 5; i++) {
-            sambaAttackRightRegion[i] = new TextureRegion(samba, i * 32, 407, 103, 115);
+
+        sambaAttackRightRegion = new TextureRegion[6];
+        for(int i = 0; i < 6; i++) {
+            sambaAttackRightRegion[i] = new TextureRegion(samba, i * 130, 1998, 101, 48);
         }
-        sambaAttackRightAnimation = new Animation(0.5f, sambaAttackRightRegion);
+        sambaAttackRightAnimation = new Animation(0.06f, sambaAttackRightRegion);
         sambaAttackRightAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
         // Cargar la imagen de fondo
